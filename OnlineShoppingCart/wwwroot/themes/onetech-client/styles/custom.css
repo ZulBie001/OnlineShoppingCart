@@ -1,0 +1,7 @@
+﻿.cat_menu {
+     visibility:hidden;
+}
+
+.cat_menu_container:hover .cat_menu {
+    visibility:visible;
+}

@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor ContextAccessor;
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    string username = ContextAccessor.HttpContext.Session.GetString("Uname");
+}
+<div class="login text-center">
+    <h1 class="display-4">Welcome @username</h1>
+</div>
+
+
+    
