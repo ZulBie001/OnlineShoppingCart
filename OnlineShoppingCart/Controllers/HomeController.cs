@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace OnlineShoppingCart.Controllers
 {
+//Umair added this comment.
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
