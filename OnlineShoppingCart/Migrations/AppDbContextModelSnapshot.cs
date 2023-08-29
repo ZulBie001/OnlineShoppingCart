@@ -17,7 +17,7 @@ namespace OnlineShoppingCart.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -68,7 +68,6 @@ namespace OnlineShoppingCart.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EncryptedPassword")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -142,13 +141,55 @@ namespace OnlineShoppingCart.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("OnlineShoppingCart.Models.LoginHistory", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClientInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ClosedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DbEntryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IPAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OS")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ValidTill")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LoginHistory");
+                });
+
             modelBuilder.Entity("OnlineShoppingCart.Models.Order", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DbEntryTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -212,9 +253,6 @@ namespace OnlineShoppingCart.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoryId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("DbEntryTime")
                         .HasColumnType("datetime2");
 
@@ -248,8 +286,6 @@ namespace OnlineShoppingCart.Migrations
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CategoryId1");
 
                     b.ToTable("Products");
                 });
@@ -329,6 +365,16 @@ namespace OnlineShoppingCart.Migrations
                     b.Navigation("ShoppingCart");
                 });
 
+            modelBuilder.Entity("OnlineShoppingCart.Models.LoginHistory", b =>
+                {
+                    b.HasOne("OnlineShoppingCart.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("OnlineShoppingCart.Models.Order", b =>
                 {
                     b.HasOne("OnlineShoppingCart.Models.AppUser", "User")
@@ -362,20 +408,15 @@ namespace OnlineShoppingCart.Migrations
             modelBuilder.Entity("OnlineShoppingCart.Models.Product", b =>
                 {
                     b.HasOne("OnlineShoppingCart.Models.Category", "Brand")
-                        .WithMany()
+                        .WithMany("BrandWiseProducts")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("OnlineShoppingCart.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("CategoryWiseProducts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("OnlineShoppingCart.Models.Category", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId1")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Brand");
 
@@ -410,7 +451,9 @@ namespace OnlineShoppingCart.Migrations
 
             modelBuilder.Entity("OnlineShoppingCart.Models.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("BrandWiseProducts");
+
+                    b.Navigation("CategoryWiseProducts");
                 });
 
             modelBuilder.Entity("OnlineShoppingCart.Models.Order", b =>

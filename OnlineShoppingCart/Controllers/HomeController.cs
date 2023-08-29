@@ -15,11 +15,11 @@ namespace OnlineShoppingCart.Controllers
 
         public IActionResult Index()
         {
-            var userName = HttpContext.Session.GetString("Uname");
+            /*var userName = HttpContext.Session.GetString(Global.SessionName);
             if (string.IsNullOrEmpty(userName))
             {
                 return RedirectToAction("Index", "Login");
-            }
+            }*/
             return View();
         }
 

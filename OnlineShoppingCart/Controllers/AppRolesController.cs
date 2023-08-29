@@ -22,7 +22,7 @@ namespace OnlineShoppingCart.Controllers
         // GET: AppRoles
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Roles.ToListAsync());
+            return View(await _context.Roles.ToListAsync());
         }
 
         // GET: AppRoles/Details/5
@@ -148,14 +148,14 @@ namespace OnlineShoppingCart.Controllers
             {
                 _context.Roles.Remove(appRole);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AppRoleExists(string id)
         {
-          return _context.Roles.Any(e => e.Id == id);
+            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }

@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using OnlineShoppingCart.Data;
+using OnlineShoppingCart.Handlers;
 using OnlineShoppingCart.Models;
 using System.Drawing;
 
 namespace OnlineShoppingCart.Controllers
 {
+    //[Authorized]
     public class ProductsController : Controller
     {
         private readonly AppDbContext _context;

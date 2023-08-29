@@ -41,9 +41,6 @@ namespace OnlineShoppingCart.Models
 
         [ForeignKey("Category")]
         public string CategoryId { get; set; }
-
-        // Navigation property for the category to which this product belongs
-        //[ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
         // Navigation property for cart items containing this product

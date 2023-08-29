@@ -1,13 +1,143 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @inject IHttpContextAccessor ContextAccessor;
+@inject AppDbContext _db
 @{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
-    string username = ContextAccessor.HttpContext.Session.GetString("Uname");
+    var products = _db.Products.Select(m => new
+    {
+        m.Id,
+        m.Name,
+        ImageUrl = m.Images.OrderBy(s => s.Rank).Select(s => s.URL).FirstOrDefault(),
+        m.Price,
+        CategoryName = m.Category.Name
+    }).ToList();
+    string username = ContextAccessor.HttpContext.Session.GetString(Global.SessionName);
 }
-<div class="login text-center">
-    <h1 class="display-4">Welcome @username</h1>
+
+<!-- hero area -->
+<div class="hero-area hero-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 offset-lg-2 text-center">
+                <div class="hero-text">
+                    <div class="hero-text-tablecell">
+                        <p class="subtitle">Smart Apparel Exploration</p>
+                        <h1>ZulqarnainXplorer</h1>
+                        <div class="hero-btns">
+                            <a href="shop.html" class="boxed-btn">Collection</a>
+                            <a href="contact.html" class="bordered-btn">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- end hero area -->
+<!-- features list section -->
+<div class="list-section pt-80 pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="list-box d-flex align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Free Shipping</h3>
+                        <p>When order over $75</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="list-box d-flex align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-phone-volume"></i>
+                    </div>
+                    <div class="content">
+                        <h3>24/7 Support</h3>
+                        <p>Get support all day</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="list-box d-flex justify-content-start align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Refund</h3>
+                        <p>Get refund within 3 days!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+</div>
+<!-- end features list section -->
+<!-- product section -->
+<h1>@username</h1>
+<div id="cartApp" v-cloak>
+    <ul>
+        <li v-for="c in cartList">{{c.name}} {{c.qty}}</li>
+    </ul>
+    @foreach (var group in products.GroupBy(m => m.CategoryName).OrderByDescending(m => m.Count()))
+    {
+        <div class="product-section mt-150 mb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2 text-center">
+                        <div class="section-title">
+                            <h3><span class="orange-text">Our</span> Products</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+                        </div>
+                    </div>
+                </div>
 
-    
+                <div class="row">
+                    @foreach (var item in group)
+                    {
+                        <div class="col-lg-4 col-md-6 text-center">
+
+                            <div class="single-product-item">
+                                <div class="product-image">
+                                    <a href="single-product.html"><img src="/@item.ImageUrl" alt=""></a>
+                                </div>
+                                <h3>@item.Name</h3>
+                                <p class="product-price"><span></span> $ @(item.Price) </p>
+                                <button class="cart-btn" @@click="addToCart('@item.Id')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- end product section -->
+@section js{
+    <script>
+        var cartApp = Vue.createApp({
+            data() {
+                return {
+                    cartList: [],
+                    isLoggedIn: @Json.Serialize(_db.GetLoggedInUser() != null)
+                                        }
+            },
+            methods: {
+                addToCart: function (id) {
+                    if (!this.isLoggedIn) {
+                        window.location.assign('/login');
+                    }
+                    $.post('/Cart/AddOrUpdateCart', { id: id }, function (res) {
+                        if (res.status) {
+                            cartApp.cartList = res.data;
+                        }
+                    })
+                },
+            }
+        }).mount('#cartApp');
+    </script>
+	}

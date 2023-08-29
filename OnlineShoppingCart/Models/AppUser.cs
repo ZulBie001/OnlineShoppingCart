@@ -15,14 +15,11 @@ namespace OnlineShoppingCart.Models
 
         public string EncryptedPassword { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
         [NotMapped]
         public string Password { get; set; }
 
-        [Compare("Password")]
-        [DataType(DataType.Password)]
         [NotMapped]
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
         // Navigation property for roles
@@ -34,14 +31,20 @@ namespace OnlineShoppingCart.Models
         // Additional identification details
     }
 
+    public class AppUserViewModel : ShareModel
+    {
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+        public List<string> Roles { get; set; }
+    }
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email format")]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
+        [Required]
         public string Password { get; set; }
         public bool RememberMe { get; set; }
     }

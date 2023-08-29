@@ -5,7 +5,7 @@ namespace OnlineShoppingCart.Models
     public class ShoppingCart
     {
         [Key]
-        public string Id { get; set; }
+        public string Id { get; set; } = Path.GetRandomFileName().Replace(".","");
 
         [Required]
         public string UserId { get; set; }

@@ -16,6 +16,8 @@ namespace OnlineShoppingCart.Models
         [StringLength(500)]
         public string ShippingAddress { get; set; }
 
+        public string ContactNumber { get; set; }
+        public string EmailAddress { get; set; }
         public List<OrderDetail> Details { get; set; }
     }
 }

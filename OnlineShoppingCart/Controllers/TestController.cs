@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace OnlineShoppingCart.Controllers
 {
     public class TestController : Controller
     {
+
         public IActionResult Vue()
         {
             return View();
@@ -13,7 +15,7 @@ namespace OnlineShoppingCart.Controllers
         {
             return View();
         }
-        public IActionResult OneTech()
+        public IActionResult ZulqarnainXplorer()
         {
             return View();
         }
@@ -22,8 +24,8 @@ namespace OnlineShoppingCart.Controllers
         {
             return View();
         }
-        
-        public IActionResult ThemeOneTech()
+
+        public IActionResult ThemeZulqarnainXplorer()
         {
             return View();
         }
@@ -32,15 +34,21 @@ namespace OnlineShoppingCart.Controllers
         {
             return View();
         }
+
+        public IActionResult Order()
+        {
+            return View();
+        }
+
         public IActionResult ExtensionMethods()
         {
-            string obj = "some data is string";
-            //obj = string.Join(" ", obj.Split(' ').Select(m => m[..1].ToUpper() + m[..1]));
-            //CultureInfo.CurrentCulture.TextInfo.ToTitleCase(obj);
-            obj = obj.ToTitleCase();
-            obj.AlphaNumericCount();
+            string obj = "some data in string";
+            //obj = string.Join(" ", obj.Split(' ').Select(m => m[..1].ToUpper() + m[1..]));
+            // CultureInfo.CurrentCulture.TextInfo.ToTitleCase(obj);
+            // abc-def-ghi
+            obj = obj = obj.ToTitleCase();
             obj.WordCount('-');
-            obj.ToSlug();
+            //obj.AlphaNumeric();
             return View();
         }
     }

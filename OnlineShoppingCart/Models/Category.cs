@@ -3,6 +3,36 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineShoppingCart.Models
+//{
+//    public class Category : ShareModel
+//    {
+//        [Required(ErrorMessage = "Name field is required.")]
+//        [StringLength(100)]
+//        [Display(Name = "Category Name")]
+//        [Remote("CategoryNameCheck", "RemoteValidations", AdditionalFields = "Id", ErrorMessage = "Name already exists")]
+//        public string Name { get; set; }
+
+//        [Required(ErrorMessage = "The Description field is required.")]
+//        [StringLength(500, MinimumLength = 5, ErrorMessage = "Valid length 5 to 500")]
+//        public string Description { get; set; }
+
+//        public bool Status { get; set; }
+
+//        [NotMapped]
+//        public IFormFile Logo { get; set; }
+
+//        [StringLength(200)]
+//        public string LogoUrl { get; set; }
+
+//        public List<Product> Products { get; set; }
+//        // Additional relevant details
+
+//        public CategoryType Type { get; set; }
+//    }
+
+
+
+
 {
     public class Category : ShareModel
     {
@@ -24,8 +54,25 @@ namespace OnlineShoppingCart.Models
         [StringLength(200)]
         public string LogoUrl { get; set; }
 
-        public List<Product> Products { get; set; }
-        // Additional relevant details
+        [InverseProperty("Category")]
+        public List<Product> CategoryWiseProducts { get; set; }
+
+        [InverseProperty("Brand")]
+        public List<Product> BrandWiseProducts { get; set; }
+
+        public CategoryType Type { get; set; }
+    }
+
+    public class CategoryViewModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public bool Status { get; set; }
+        public string LogoUrl { get; set; }
+        public int CategoryWiseProducts { get; set; }
+
+        public int BrandWiseProducts { get; set; }
 
         public CategoryType Type { get; set; }
     }

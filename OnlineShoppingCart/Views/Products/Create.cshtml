@@ -6,7 +6,6 @@
     var categories = new SelectList(_context.Categories.Where(m => m.Status && m.Type == CategoryType.Category).Select(m => new { m.Id, m.Name }).ToList(), "Id", "Name", Model?.CategoryId);
     var brands = new SelectList(_context.Categories.Where(m => m.Status && m.Type == CategoryType.Brand).Select(m => new { m.Id, m.Name }).ToList(), "Id", "Name", Model?.BrandId);
 }
-
 <div class="row">
     <div class="col-md-6">
         <div class="card">
@@ -82,7 +81,6 @@
                 <p class="card-description">
                     Setup Section
                 </p>
-
             </div>
         </div>
     </div>
